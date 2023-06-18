@@ -1,8 +1,12 @@
 ﻿#include "Player.h"
 #include "interface.h"
 #include "System.h"
+#include "Sound.h"
+#include "boss.h"
+#include "stage.h"
 #include <stdio.h>
 #include <Windows.h>
+#include <process.h>
 
 PLAYER player;
 shootingRange = 7;
@@ -29,6 +33,7 @@ int playerShiftRight(void)
 	SetCurrentCursorPos(player.playerPos.X, player.playerPos.Y);
 	player.direction = RIGHT;
 	ShowPlayer();
+	Sound_Play(WALKING);
 	return detectCollision;
 }
 int playerShiftLeft(void)
@@ -42,7 +47,7 @@ int playerShiftLeft(void)
 	SetCurrentCursorPos(player.playerPos.X, player.playerPos.Y);
 	player.direction = LEFT;
 	ShowPlayer();
-
+	Sound_Play(WALKING);
 	return detectCollision;
 }
 int playerShiftUp(void)
@@ -56,6 +61,7 @@ int playerShiftUp(void)
 	SetCurrentCursorPos(player.playerPos.X, player.playerPos.Y);
 	player.direction = UP;
 	ShowPlayer();
+	Sound_Play(WALKING);
 	return detectCollision;
 }
 int playerShiftDown(void)
@@ -69,11 +75,11 @@ int playerShiftDown(void)
 	SetCurrentCursorPos(player.playerPos.X, player.playerPos.Y);
 	player.direction = DOWN;
 	ShowPlayer();
+	Sound_Play(WALKING);
 	return detectCollision;
 }
 void ShowPlayer()
 {
-	COORD curPos = GetCurrentCursorPos();
 	SetCurrentCursorPos(player.playerPos.X, player.playerPos.Y);
 	//printf("﹥");    // PC icon
 	switch (player.direction) {
@@ -92,11 +98,9 @@ void ShowPlayer()
 	default:
 		break;
 	}
-	SetCurrentCursorPos(curPos.X, curPos.Y);
 }
 void DeletePlayer()
 {
-	COORD curPos = GetCurrentCursorPos();
 	SetCurrentCursorPos(player.playerPos.X, player.playerPos.Y);
 	printf("  ");
 }
@@ -120,89 +124,88 @@ void playerMove(int direction) {
 	}
 	switch (detectCollision) {
 	case ITEM_1:
+		Sound_Play(GET_ITEM1);
 		player.item_rock++;
+		STAGE[player.playerPos.Y][player.playerPos.X / 2] = 0;
+		PrintUI();
 		break;
 	case ITEM_2:
 		player.item_portion++;
+		STAGE[player.playerPos.Y][player.playerPos.X / 2] = 0;
+		PrintUI();
 		break;
 	case WEAPON:
+		Sound_Play(GET_GUN);
 		player.weapon++;
+		STAGE[player.playerPos.Y][player.playerPos.X / 2] = 0;
+		PrintUI();
 		break;
 	case MONSTER:
+		Sound_Play(DAMAGE);
 		player.life--;
+		PrintUI();
 		break;
 	case KEY:
+		Sound_Play(GET_KEY);
 		player.stageKey++;
+		STAGE[player.playerPos.Y][player.playerPos.X / 2] = 0;
+		PrintUI();
+
+		if (stageNum == 4) {
+			if (player.stageKey == 1) {
+				boss.bossHP = 2;
+				STAGE[20][18] = 0;
+				STAGE[21][18] = 0;
+				STAGE[22][18] = 0;
+			}
+			else if (player.stageKey == 2) {
+				boss.bossHP = 1;
+				STAGE[15][23] = 0;
+				STAGE[15][24] = 0;
+				STAGE[15][25] = 0;
+			}
+			else if (player.stageKey == 3) {
+				boss.bossHP = 1;
+				STAGE[5][22] = 0;
+				STAGE[6][22] = 0;
+				STAGE[7][22] = 0;
+			}
+		}
 		break;
 	case EXIT:
+		if (isPlayerHasKey() >= 1) {
+			Sound_Play(USE_KEY);
+			player.stageKey = 0;
+			stageNum++;
+			StageInforInit(stageNum);
+			clearStage();
+			getScript(stageNum);
+			printScriptQueue();
+			clearStage();
+			ShowPlayer();
+
+			PrintUI();
+			if (stageNum == 4) {
+				BossInfoInit();
+				bossCooldownThread = CreateThread(NULL, 0, Thread_BOSS_COOLDOWN, (LPVOID)1, 0, &threadId);
+			}
+		}
+		break;
+	case LIGHTNING:
+		Sound_Play(DAMAGE);
+		player.life--;
+		PrintUI();
 		break;
 	default:
 		break;
 	}
 	showSoundRange(player.playerPos, PC, 5);
 }
-
-void shotGun() {
-
-	if (player.weapon == 0) return;		// 탄피가 없음
-	player.weapon--;						// 탄피 사용
-
-	COORD curPos, nextPos;
-	curPos.X = player.playerPos.X;
-	curPos.Y = player.playerPos.Y;
-	nextPos.X = player.playerPos.X;
-	nextPos.Y = player.playerPos.Y;
-
-	for (int i = 0; i < shootingRange; i++) {
-		if (player.direction == LEFT) { 
-			nextPos.X -= 2;
-		}
-		if (player.direction == RIGHT) {
-			nextPos.X += 2;
-		}
-		if (player.direction == UP) {
-			nextPos.Y--;
-		}
-		if (player.direction == DOWN) {
-			nextPos.Y++;
-		}
-
-		if (DetectCollision(nextPos.X, nextPos.Y) == WALL) { 	// 벽
-			return;
-		}
-		if (DetectCollision(nextPos.X, nextPos.Y) == MONSTER) { 	// 몬스터
-			SetCurrentCursorPos(nextPos.X, nextPos.Y);
-			printf("※");		// 우선 몬스터와 부딪혔다는 것 표현 //
-			
-			// 그 후 몬스터 관련 정보 update - 몬스터 die, stage배열 초기화
-
-
-			return;
-		}
-		else {
-			curPos.X = nextPos.X;
-			curPos.Y = nextPos.Y;
-
-			SetCurrentCursorPos(curPos.X, curPos.Y);
-			printf("ⅹ");
-			Sleep(150);
-			SetCurrentCursorPos(curPos.X, curPos.Y);
-			showStage(DetectCollision(curPos.X, curPos.Y), curPos.X, curPos.Y);
-			//printf("  ");				// 아이템/키 등이 빈칸되는부분 설정
-		}
-	}
+int isPlayerDead() {
+	if (player.life == 0) return 1;
+	return 0;
 }
-
-int DetectCollision_Bullet(int posX, int posY) {
-	int bulletX = (posX) / 2;
-	int bulletY = posY;
-
-	// 벽
-	if (STAGE[bulletY][bulletX] == WALL)
-		return 1;
-	// 몬스터
-	if (STAGE[bulletY][bulletX] == MONSTER)
-		return 2;
-	// nothing
+int isPlayerHasKey() {
+	if (player.stageKey > 0) return 1;
 	return 0;
 }

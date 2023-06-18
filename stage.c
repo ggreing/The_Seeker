@@ -1,4 +1,5 @@
 #include"stage.h"
+
 #pragma warning(disable:4996)
 
 char STAGE[STAGE_Y][STAGE_X / 2];
@@ -8,16 +9,16 @@ void GetStageInfor(int StageNum) {
 	int i, j;
 	switch (StageNum) {
 	case 1:
-		fstage = fopen("stage1.txt", "r");
+		fstage = fopen("stage/stage1.txt", "r");
 		break;
 	case 2:
-		fstage = fopen("stage2.txt", "r");
+		fstage = fopen("stage/stage2.txt", "r");
 		break;
 	case 3:
-		fstage = fopen("stage3.txt", "r");
+		fstage = fopen("stage/stage3.txt", "r");
 		break;
 	case 4:
-		fstage = fopen("stage4.txt", "r");
+		fstage = fopen("stage/stage4.txt", "r");
 		break;
 	default:
 		break;
@@ -49,9 +50,9 @@ void GetStageInfor(int StageNum) {
 					STAGE[i][j] = NPC;
 					break;
 				case '7':
-					//STAGE[i][j] = PC;
-					playerPosInit(i * 2, j);
-					STAGE[i][i] = EMPTY_SPACE;
+					STAGE[i][j] = PC;
+					playerPosInit(j*2, i);
+					STAGE[i][j] = EMPTY_SPACE;
 					break;
 				case '8':
 					STAGE[i][j] = KEY;
@@ -69,7 +70,7 @@ void printStage() {
 	int i, j;
 	for (i = 0; i < STAGE_Y; i++) {
 		for (j = 0; j < STAGE_X / 2; j++) {
-			showStage(STAGE[i][j], i, j);
+			showStage(STAGE[i][j], j * 2, i);
 		}
 		printf("\n");
 	}
@@ -107,6 +108,9 @@ void showStage(int stageObject, int posX, int posY) {
 	case EXIT:
 		printf("★");
 		break;
+	case LIGHTNING:
+		printf("※");
+		break;
 	default:
 		break;
 	}
@@ -136,7 +140,7 @@ void PrintUI() {
 	SetCurrentCursorPos(GBOARD_POS_X, posY++);
 	printf("포션:% d\n", player.item_portion);
 	SetCurrentCursorPos(GBOARD_POS_X, posY++);
-	printf("무기:% d\n", player.weapon);
+	printf("무기:% d \n", player.weapon);
 	SetCurrentCursorPos(GBOARD_POS_X, posY++);
 	printf("보유 열쇠:% d\n", player.stageKey);
 
@@ -161,6 +165,204 @@ void PrintUI() {
 void StageInforInit(int stageNum) {
 	GetStageInfor(stageNum);
 
-	playerInfoInit(MAX_LIFE, 0, 0, 0, RIGHT);
-
+	//playerInfoInit(MAX_LIFE, 0, 0, 0, RIGHT);
+	initGunInfo();
+}
+void clearStage() {
+	int i, j;
+	SetCurrentCursorPos(STAGE_POS_X, STAGE_POS_Y);
+	for (i = 0; i < STAGE_Y; i++) {
+		for (j = 0; j < STAGE_X / 2; j++)
+			printf("  ");
+		printf("\n");
+	}
+}
+void clearScreen() {
+	int i, j;
+	SetCurrentCursorPos(STAGE_POS_X, STAGE_POS_Y);
+	for (i = 0; i < STAGE_Y; i++) {
+		for (j = 0; j < 65; j++)	// 초기 콘솔창 x축 크기 값의 절반만큼 반복
+			printf("  ");
+		printf("\n");
+	}
+}
+void GameOver() { 
+	FILE* fstage = NULL;
+	char tmp;
+	int i, j;
+	Sound_Play(GAMEOVER);
+	fstage = fopen("gameover.txt", "r");
+	if (fstage != NULL) {
+		for (i = 0; i < STAGE_Y; i++) {
+			SetCurrentCursorPos(0, i);
+			for (j = 0; j < STAGE_X / 2; j++) {
+				tmp = fgetc(fstage);
+				switch (tmp) {
+				case '0':
+					printf("  ");
+					break;
+				case '1':
+					printf("■");
+					break;
+				}
+			}
+			fgetc(fstage);
+		}
+	}
+	SetCurrentCursorPos(36, 33);
+	for (i = 6; i > 0; i--) {
+		printf("%d초 뒤에 다시 시작합니다.", i);
+		Sleep(1000);
+		SetCurrentCursorPos(36, 33);
+		printf("                          ");
+		SetCurrentCursorPos(36, 33);
+	}
+	clearStage();
+}
+void GameStart() {
+	FILE* fstage = NULL;
+	char tmp;
+	int i, j;
+	int num;
+	Sound_Play(12);
+	do {
+		fstage = fopen("gamestart.txt", "r");
+		if (fstage != NULL) {
+			for (i = 0; i < 41; i++) {
+				SetCurrentCursorPos(0, i);
+				for (j = 0; j < 65; j++) {
+					tmp = fgetc(fstage);
+					switch (tmp) {
+					case '0':
+						printf("  ");
+						break;
+					case '1':
+						printf("┌");
+						break;
+					case '2':
+						printf("┐");
+						break;
+					case '3':
+						printf("└");
+						break;
+					case '4':
+						printf("┘");
+						break;
+					case '5':
+						printf("──");
+						break;
+					case '6':
+						printf("│");
+						break;
+					case '7':
+						printf("■");
+						break;
+					}
+				}
+				fgetc(fstage);
+			}
+		}
+		while (1) {
+			num = SelectMenu();
+			if (num == 0) {
+				StopSound(MAIN);
+				break;
+			}
+			else if (num == 1) {
+				help();
+				break;
+			}
+			else {
+				exit(0);
+			}
+		}
+	} while (num == 1);
+	clearScreen();
+}
+int SelectMenu() {
+	int key;
+	int num = 0;
+	COORD curPos;
+	SetCurrentCursorPos(STAGE_POS_X + 58, STAGE_POS_Y + 25);
+	printf("◆ 게임시작");
+	SetCurrentCursorPos(STAGE_POS_X + 58, STAGE_POS_Y + 27);
+	printf("◇ 도움말");
+	SetCurrentCursorPos(STAGE_POS_X + 58, STAGE_POS_Y + 29);
+	printf("◇ 게임종료");
+	SetCurrentCursorPos(STAGE_POS_X + 70, STAGE_POS_Y + 25);
+	printf("<<");
+	while (1) {
+		Sleep(100);
+		if (_kbhit() != 0) {
+			key = _getch();
+			switch (key) {
+			case UP:
+				if (num == 0) {
+					break;
+				}
+				else {
+					curPos = GetCurrentCursorPos();
+					SetCurrentCursorPos(curPos.X - 2, curPos.Y);
+					printf("  ");
+					SetCurrentCursorPos(curPos.X - 14, curPos.Y);
+					printf("◇");
+					SetCurrentCursorPos(curPos.X - 14, curPos.Y - 2);
+					printf("◆");
+					SetCurrentCursorPos(curPos.X - 2, curPos.Y - 2);
+					printf("<<");
+					Sound_Play(13);
+					num--;
+					break;
+				}
+			case DOWN:
+				if (num == 2) {
+					break;
+				}
+				else {
+					curPos = GetCurrentCursorPos();
+					SetCurrentCursorPos(curPos.X - 2, curPos.Y);
+					printf("  ");
+					SetCurrentCursorPos(curPos.X - 14, curPos.Y);
+					printf("◇");
+					SetCurrentCursorPos(curPos.X - 14, curPos.Y + 2);
+					printf("◆");
+					SetCurrentCursorPos(curPos.X - 2, curPos.Y + 2);
+					printf("<<");
+					Sound_Play(13);
+					num++;
+					break;
+				}
+				break;
+			case ENTER:
+				curPos = GetCurrentCursorPos();
+				SetCurrentCursorPos(curPos.X - 2, curPos.Y);
+				printf("  ");
+				Sound_Play(13);
+				return num;
+			}
+		}
+	}
+}
+void help() {
+	int i, j, key;
+	FILE* f = NULL;
+	char tmp[100];
+	clearScreen();
+	f = fopen("help.txt", "r");
+	if (f != NULL) {
+		for (i = 0; i < 40; i++) {
+			SetCurrentCursorPos(0, i);
+			fgets(tmp, sizeof(tmp), f);
+			printf("%s\n", tmp);
+		}
+	}
+	fclose(f);
+	while (1) {
+		Sleep(100);
+		key = _getch();
+		if(key==ENTER) {
+			clearScreen();
+			return;
+		}
+	}
 }
