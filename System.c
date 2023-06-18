@@ -2,46 +2,56 @@
 
 COORD GetCurrentCursorPos(void)
 {
-    COORD curPoint;
-    CONSOLE_SCREEN_BUFFER_INFO curInfo;
+	COORD curPoint;
+	CONSOLE_SCREEN_BUFFER_INFO curInfo;
 
-    GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &curInfo);
-    curPoint.X = curInfo.dwCursorPosition.X;
-    curPoint.Y = curInfo.dwCursorPosition.Y;
+	GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &curInfo);
+	curPoint.X = curInfo.dwCursorPosition.X;
+	curPoint.Y = curInfo.dwCursorPosition.Y;
 
-    return curPoint;
+	return curPoint;
 }
 void RemoveCursor(void)
 {
-    CONSOLE_CURSOR_INFO curInfo;
-    GetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &curInfo);
-    curInfo.bVisible = 0;
-    SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &curInfo);
+	CONSOLE_CURSOR_INFO curInfo;
+	GetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &curInfo);
+	curInfo.bVisible = 0;
+	SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &curInfo);
 }
 void SetCurrentCursorPos(int x, int y)
 {
-    COORD pos = { x, y };
-    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
+	COORD pos = { x, y };
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
 }
 
 void ProcessKeyInput() {
 	int key;
 
-	if (_kbhit() != 0) {
-		key = _getch();
-		switch (key) {
-		case LEFT:
-			playerMove(LEFT);
-			break;
-		case RIGHT:
-			playerMove(RIGHT);
-			break;
-		case UP:
-			playerMove(UP);
-			break;
-		case DOWN:
-			playerMove(DOWN);
-			break;
+	for (int i = 0; i < 20; i++) {
+		if (_kbhit() != 0) {
+			key = _getch();
+			switch (key) {
+				// ÀÌµ¿
+			case LEFT:
+				playerMove(LEFT);
+				break;
+			case RIGHT:
+				playerMove(RIGHT);
+				break;
+			case UP:
+				playerMove(UP);
+				break;
+			case DOWN:
+				playerMove(DOWN);
+				break;
+				//
+			case ATTACK:
+				shotGun();
+				break;
+			case ITEM_INPUT_2:
+				useItemPortion();
+				break;
+			}
 		}
 	}
 }

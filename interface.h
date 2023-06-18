@@ -34,3 +34,6 @@
 #define GBOARD_POS_Y STAGE_POS_Y
 #define SCRIPT_POS_X STAGE_POS_X + (STAGE_X - SCRIPT_X) / 2
 #define SCRIPT_POS_Y STAGE_POS_Y + (STAGE_Y - SCRIPT_Y) / 2
+
+#define MAX_LIFE 3
+#define INIT_WEAPON 0	// 처음 시작할 때 보유할 탄피 수
