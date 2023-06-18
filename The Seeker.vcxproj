@@ -142,10 +142,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="boss.c" />
     <ClCompile Include="ItemAndWeapon.c" />
     <ClCompile Include="main.c">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="monster.c" />
     <ClCompile Include="Player.c" />
     <ClCompile Include="script.c" />
     <ClCompile Include="sound.c" />
@@ -153,8 +155,10 @@
     <ClCompile Include="System.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="boss.h" />
     <ClInclude Include="interface.h" />
     <ClInclude Include="ItemAndWeapon.h" />
+    <ClInclude Include="monster.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="script.h" />
     <ClInclude Include="Sound.h" />

@@ -50,7 +50,7 @@ void ProcessKeyInput() {
 		case ITEM_INPUT_2:
 			useItemPortion();
 			break;
-		case ITEM_INPUT_1 :
+		case ITEM_INPUT_1:
 			useItemRock();
 			break;
 		}

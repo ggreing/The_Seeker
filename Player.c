@@ -2,8 +2,10 @@
 #include "interface.h"
 #include "System.h"
 #include "Sound.h"
+#include "monster.h"
 #include "boss.h"
 #include "stage.h"
+#include "monster.h"
 #include <stdio.h>
 #include <Windows.h>
 #include <process.h>
@@ -33,7 +35,7 @@ int playerShiftRight(void)
 	SetCurrentCursorPos(player.playerPos.X, player.playerPos.Y);
 	player.direction = RIGHT;
 	ShowPlayer();
-	Sound_Play(WALKING);
+	soundPos = player.playerPos;
 	return detectCollision;
 }
 int playerShiftLeft(void)
@@ -47,7 +49,7 @@ int playerShiftLeft(void)
 	SetCurrentCursorPos(player.playerPos.X, player.playerPos.Y);
 	player.direction = LEFT;
 	ShowPlayer();
-	Sound_Play(WALKING);
+	soundPos = player.playerPos;
 	return detectCollision;
 }
 int playerShiftUp(void)
@@ -61,7 +63,7 @@ int playerShiftUp(void)
 	SetCurrentCursorPos(player.playerPos.X, player.playerPos.Y);
 	player.direction = UP;
 	ShowPlayer();
-	Sound_Play(WALKING);
+	soundPos = player.playerPos;
 	return detectCollision;
 }
 int playerShiftDown(void)
@@ -75,7 +77,7 @@ int playerShiftDown(void)
 	SetCurrentCursorPos(player.playerPos.X, player.playerPos.Y);
 	player.direction = DOWN;
 	ShowPlayer();
-	Sound_Play(WALKING);
+	soundPos = player.playerPos;
 	return detectCollision;
 }
 void ShowPlayer()
@@ -130,6 +132,7 @@ void playerMove(int direction) {
 		PrintUI();
 		break;
 	case ITEM_2:
+		Sound_Play(GET_ITEM2);
 		player.item_portion++;
 		STAGE[player.playerPos.Y][player.playerPos.X / 2] = 0;
 		PrintUI();
@@ -165,24 +168,42 @@ void playerMove(int direction) {
 				STAGE[15][25] = 0;
 			}
 			else if (player.stageKey == 3) {
-				boss.bossHP = 1;
+				boss.bossHP = 0;
 				STAGE[5][22] = 0;
 				STAGE[6][22] = 0;
 				STAGE[7][22] = 0;
+
+				clearStage();
+				stageNum = 6;
+				getScript(stageNum);
+				printScriptQueue();
+				getchar();
+				clearStage();
+
+				isCleared = 1;
+				printStage();
 			}
 		}
 		break;
 	case EXIT:
 		if (isPlayerHasKey() >= 1) {
+			if (isCleared == 1 && stageNum == 6) {
+				stageNum = 0;
+			}
 			Sound_Play(USE_KEY);
+			StopSound(MONSTER);
 			player.stageKey = 0;
 			stageNum++;
 			StageInforInit(stageNum);
+			MonsterInit();
 			clearStage();
 			getScript(stageNum);
 			printScriptQueue();
 			clearStage();
 			ShowPlayer();
+			if (isCleared == 1) {
+				printStage();
+			}
 
 			PrintUI();
 			if (stageNum == 4) {

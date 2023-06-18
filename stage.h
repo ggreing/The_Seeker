@@ -4,6 +4,7 @@
 #include "Player.h"
 #include "System.h"
 #include <stdio.h>
+#include <stdbool.h>
 
 extern int stageNum;
 extern char STAGE[STAGE_Y][STAGE_X / 2];
