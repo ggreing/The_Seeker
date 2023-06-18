@@ -41,6 +41,7 @@ COORD moveByDirection(void) {
 void shotGun(void) {
 	if (player.weapon == 0) return 0;		// ÅºÇÇ°¡ ¾øÀ½
 	player.weapon--;							// ÅºÇÇ »ç¿ë
+	Sound_Play(USE_GUN2);
 
 	gun.shotOrNot = 1;
 	currentDirect = player.direction;

@@ -1,6 +1,7 @@
 ﻿#include "Player.h"
 #include "interface.h"
 #include "System.h"
+#include "Sound.h"
 #include <stdio.h>
 #include <Windows.h>
 #include <time.h>
@@ -121,6 +122,7 @@ void playerMove(int direction) {
 	}
 	switch (detectCollision) {
 	case ITEM_1:
+		Sound_Play(GET_ITEM1);
 		player.item_rock++;
 		STAGE[player.playerPos.Y][player.playerPos.X / 2] = 0;
 		break;
@@ -129,18 +131,22 @@ void playerMove(int direction) {
 		STAGE[player.playerPos.Y][player.playerPos.X / 2] = 0;
 		break;
 	case WEAPON:
+		Sound_Play(GET_GUN);
 		player.weapon++;
 		STAGE[player.playerPos.Y][player.playerPos.X / 2] = 0;
 		break;
 	case MONSTER:
+		Sound_Play(DAMAGE);
 		player.life--;
 		break;
 	case KEY:
+		Sound_Play(GET_KEY);
 		player.stageKey++;
 		STAGE[player.playerPos.Y][player.playerPos.X / 2] = 0;
 		break;
 	case EXIT:
 		if (isPlayerHasKey() == 1) {
+			Sound_Play(USE_KEY);
 			stageNum++;
 			StageInforInit(stageNum);
 			getScript(stageNum);

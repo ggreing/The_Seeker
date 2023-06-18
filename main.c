@@ -5,6 +5,7 @@
 #include "Player.h"
 #include "ItemAndWeapon.h"
 #include "script.h"
+#include "Sound.h"
 #include <conio.h>
 #include <time.h>
 
@@ -12,30 +13,35 @@ int main(void)
 {
     system("mode con cols=130 lines=42");
     RemoveCursor();
+    SoundInit();
+
+    // 메인화면 출력
+    GameStart();
 
     // 스테이지 출력
     StageInforInit(1);
-    //printStage();
 
+    getScript(0);
+    printScriptQueue();
+    getScript(1);
+    printScriptQueue();
+    clearStage();
     ShowPlayer();
-	StageInforInit(1);
-	getScript(0);
-	printScriptQueue();
-	ShowPlayer();
-	getScript(1);
-	printScriptQueue();
-	clearStage();
+
     while (1) {
-		ShowPlayer();
+        ShowPlayer();
         if (isPlayerDead() == 1) {
+            GameOver();
             StageInforInit(stageNum);
         }
-		if (gun.shotOrNot && !showBullet()) {
-			continue;
-		}
-		ProcessKeyInput();
-		PrintUI();
+        if (gun.shotOrNot && !showBullet()) {
+            continue;
+        }
+        Sleep(30);
+        ProcessKeyInput();
+        PrintUI();
     }
+
     getchar();
     return 0;
 }
