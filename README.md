@@ -11,6 +11,7 @@ C언어를 사용하여 Colsole에서 게임 제작
 4. 디버깅 시작
 5. 실행
 6. 위의 방법을 따르거나 혹은 실행 파일을 다운받아서 실행할 것
+7. 다운로드 링크 <https://drive.google.com/drive/folders/14WCCLwOEdPgxP6k8Zz4fUGRQ3078QzNg?usp=sharing>
 -----------------
 
 ## 함수 구조도
