@@ -1,4 +1,5 @@
 #pragma once
+#include"Sound.h"
 #include"interface.h"
 #include"stage.h"
 #include"Player.h"

@@ -1,4 +1,3 @@
-#pragma once
 #include <fmod.h>
 #include<stdio.h>
 #include<Windows.h>

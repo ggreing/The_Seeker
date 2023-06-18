@@ -36,8 +36,11 @@
 #define SCRIPT_POS_X STAGE_POS_X + (STAGE_X - SCRIPT_X) / 2
 #define SCRIPT_POS_Y STAGE_POS_Y + (STAGE_Y - SCRIPT_Y) / 2
 
-#define MAX_LIFE 3			// 라이프 최대 보유 가능 수
+#define MAX_LIFE 3
 #define INIT_WEAPON 0	// 처음 시작할 때 보유할 탄피 수
+#define MAX_ROCK_SHOWRANGE 5
+
+#define LIGHTNING 10
 
 //출력 가능 소리 목록
 #define WALKING 0		// 걷는 소리
