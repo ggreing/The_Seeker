@@ -1,24 +1,24 @@
 #include"stage.h"
+
 #pragma warning(disable:4996)
 
-int stageNum = 1;
 char STAGE[STAGE_Y][STAGE_X / 2];
 void GetStageInfor(int StageNum) {
-	FILE* fstage = NULL;
+	FILE *fstage = NULL;
 	char tmp;
 	int i, j;
 	switch (StageNum) {
 	case 1:
-		fstage = fopen("stage1.txt", "r");
+		fstage = fopen("stage/stage1.txt", "r");
 		break;
 	case 2:
-		fstage = fopen("stage2.txt", "r");
+		fstage = fopen("stage/stage2.txt", "r");
 		break;
 	case 3:
-		fstage = fopen("stage3.txt", "r");
+		fstage = fopen("stage/stage3.txt", "r");
 		break;
 	case 4:
-		fstage = fopen("stage4.txt", "r");
+		fstage = fopen("stage/stage4.txt", "r");
 		break;
 	default:
 		break;
@@ -50,9 +50,9 @@ void GetStageInfor(int StageNum) {
 					STAGE[i][j] = NPC;
 					break;
 				case '7':
-					//STAGE[i][j] = PC;
-					playerPosInit(i * 2, j);
-					STAGE[i][i] = EMPTY_SPACE;
+					STAGE[i][j] = PC;
+					playerPosInit(j*2, i);
+					STAGE[i][j] = EMPTY_SPACE;
 					break;
 				case '8':
 					STAGE[i][j] = KEY;
@@ -70,7 +70,7 @@ void printStage() {
 	int i, j;
 	for (i = 0; i < STAGE_Y; i++) {
 		for (j = 0; j < STAGE_X / 2; j++) {
-			showStage(STAGE[i][j], i, j);
+			showStage(STAGE[i][j], j * 2, i);
 		}
 		printf("\n");
 	}
@@ -108,6 +108,9 @@ void showStage(int stageObject, int posX, int posY) {
 	case EXIT:
 		printf("★");
 		break;
+	case LIGHTNING:
+		printf("※");
+		break;
 	default:
 		break;
 	}
@@ -133,36 +136,36 @@ void PrintUI() {
 	SetCurrentCursorPos(GBOARD_POS_X, posY++);
 	printf("--아이템 보유 현황--\n");
 	SetCurrentCursorPos(GBOARD_POS_X, posY++);
-	printf(" 돌멩이 : %d       \n", player.item_rock);
+	printf("돌멩이:% d\n", player.item_rock);
 	SetCurrentCursorPos(GBOARD_POS_X, posY++);
-	printf("    포션 : %d         \n", player.item_portion);
+	printf("포션:% d\n", player.item_portion);
 	SetCurrentCursorPos(GBOARD_POS_X, posY++);
-	printf("    탄피 : %d         \n", player.weapon);
+	printf("무기:% d \n", player.weapon);
 	SetCurrentCursorPos(GBOARD_POS_X, posY++);
-	printf("  보유 열쇠 : %d      \n", player.stageKey);
-	
+	printf("보유 열쇠:% d\n", player.stageKey);
+
 	posY += 2;
 	SetCurrentCursorPos(GBOARD_POS_X, posY++);
 	printf("----아이콘 설명----\n");
 	SetCurrentCursorPos(GBOARD_POS_X, posY++);
-	printf("   ○: 돌멩이\n");
+	printf("○: 돌멩이\n");
 	SetCurrentCursorPos(GBOARD_POS_X, posY++);
-	printf("   ♥: 포션 \n");
+	printf("♥: 포션\n");
 	SetCurrentCursorPos(GBOARD_POS_X, posY++);
-	printf("  ⅹ: 탄피 \n");
+	printf("ⅹ: 탄피\n");
 	SetCurrentCursorPos(GBOARD_POS_X, posY++);
-	printf("   § : 몬스터\n");
+	printf("§: 몬스터\n");
 	SetCurrentCursorPos(GBOARD_POS_X, posY++);
-	printf("  ⓝ: NPC\n");
+	printf("ⓝ: NPC\n");
 	SetCurrentCursorPos(GBOARD_POS_X, posY++);
-	printf("  ＊: 열쇠\n");
+	printf("＊: 열쇠\n");
 	SetCurrentCursorPos(GBOARD_POS_X, posY++);
-	printf("  ★: 출구\n");
+	printf("★: 출구\n");
 }
 void StageInforInit(int stageNum) {
-	clearStage();
 	GetStageInfor(stageNum);
-	playerInfoInit(MAX_LIFE, 0, 0, INIT_WEAPON, RIGHT);
+
+	//playerInfoInit(MAX_LIFE, 0, 0, 0, RIGHT);
 	initGunInfo();
 }
 void clearStage() {
@@ -174,7 +177,6 @@ void clearStage() {
 		printf("\n");
 	}
 }
-
 void clearScreen() {
 	int i, j;
 	SetCurrentCursorPos(STAGE_POS_X, STAGE_POS_Y);
@@ -184,7 +186,7 @@ void clearScreen() {
 		printf("\n");
 	}
 }
-void GameOver() {
+void GameOver() { 
 	FILE* fstage = NULL;
 	char tmp;
 	int i, j;
@@ -341,7 +343,6 @@ int SelectMenu() {
 		}
 	}
 }
-
 void help() {
 	int i, j, key;
 	FILE* f = NULL;
@@ -359,7 +360,7 @@ void help() {
 	while (1) {
 		Sleep(100);
 		key = _getch();
-		if (key == ENTER) {
+		if(key==ENTER) {
 			clearScreen();
 			return;
 		}

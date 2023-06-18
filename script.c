@@ -92,6 +92,7 @@ void printScriptQueue() {
 		}
 		script = tmp;
 		getch();
+		//getch();
 	}
 }
 void clearScript() {

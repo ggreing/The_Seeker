@@ -1,5 +1,7 @@
 #include "System.h"
 
+CRITICAL_SECTION cs;
+
 COORD GetCurrentCursorPos(void)
 {
 	COORD curPoint;
@@ -27,31 +29,30 @@ void SetCurrentCursorPos(int x, int y)
 void ProcessKeyInput() {
 	int key;
 
-	for (int i = 0; i < 20; i++) {
-		if (_kbhit() != 0) {
-			key = _getch();
-			switch (key) {
-				// ÀÌµ¿
-			case LEFT:
-				playerMove(LEFT);
-				break;
-			case RIGHT:
-				playerMove(RIGHT);
-				break;
-			case UP:
-				playerMove(UP);
-				break;
-			case DOWN:
-				playerMove(DOWN);
-				break;
-				//
-			case ATTACK:
-				shotGun();
-				break;
-			case ITEM_INPUT_2:
-				useItemPortion();
-				break;
-			}
+	if (_kbhit() != 0) {
+		key = _getch();
+		switch (key) {
+		case LEFT:
+			playerMove(LEFT);
+			break;
+		case RIGHT:
+			playerMove(RIGHT);
+			break;
+		case UP:
+			playerMove(UP);
+			break;
+		case DOWN:
+			playerMove(DOWN);
+			break;
+		case ATTACK:
+			shotGun();
+			break;
+		case ITEM_INPUT_2:
+			useItemPortion();
+			break;
+		case ITEM_INPUT_1 :
+			useItemRock();
+			break;
 		}
 	}
 }
@@ -59,9 +60,12 @@ void ProcessKeyInput() {
 int DetectCollision(int posX, int posY) {
 	return STAGE[posY][posX / 2];
 }
+
 void showSoundRange(COORD curPos, int objNum, int range) {
 	int posX = curPos.X / 2;
 	int posY = curPos.Y;
+
+	InitializeCriticalSection(&cs);
 
 	for (posX = curPos.X / 2; posX >= 0 && posX > curPos.X / 2 - range; posX--) {
 		for (posY = curPos.Y; posY >= 0 && posY > curPos.Y - range; posY--) {
@@ -115,4 +119,5 @@ void showSoundRange(COORD curPos, int objNum, int range) {
 		}
 		if (STAGE[posY][curPos.X / 2] == WALL) break;
 	}
+	LeaveCriticalSection(&cs);
 }

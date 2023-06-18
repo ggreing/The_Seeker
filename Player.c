@@ -2,12 +2,14 @@
 #include "interface.h"
 #include "System.h"
 #include "Sound.h"
+#include "boss.h"
+#include "stage.h"
 #include <stdio.h>
 #include <Windows.h>
-#include <time.h>
+#include <process.h>
 
 PLAYER player;
-
+shootingRange = 7;
 void playerInfoInit(int life, int item_rock, int item_portion, int weapon, int direction) {
 	player.life = life;
 	player.item_rock = item_rock;
@@ -31,6 +33,7 @@ int playerShiftRight(void)
 	SetCurrentCursorPos(player.playerPos.X, player.playerPos.Y);
 	player.direction = RIGHT;
 	ShowPlayer();
+	Sound_Play(WALKING);
 	return detectCollision;
 }
 int playerShiftLeft(void)
@@ -44,7 +47,7 @@ int playerShiftLeft(void)
 	SetCurrentCursorPos(player.playerPos.X, player.playerPos.Y);
 	player.direction = LEFT;
 	ShowPlayer();
-
+	Sound_Play(WALKING);
 	return detectCollision;
 }
 int playerShiftUp(void)
@@ -58,6 +61,7 @@ int playerShiftUp(void)
 	SetCurrentCursorPos(player.playerPos.X, player.playerPos.Y);
 	player.direction = UP;
 	ShowPlayer();
+	Sound_Play(WALKING);
 	return detectCollision;
 }
 int playerShiftDown(void)
@@ -71,11 +75,11 @@ int playerShiftDown(void)
 	SetCurrentCursorPos(player.playerPos.X, player.playerPos.Y);
 	player.direction = DOWN;
 	ShowPlayer();
+	Sound_Play(WALKING);
 	return detectCollision;
 }
 void ShowPlayer()
 {
-	COORD curPos = GetCurrentCursorPos();
 	SetCurrentCursorPos(player.playerPos.X, player.playerPos.Y);
 	//printf("﹥");    // PC icon
 	switch (player.direction) {
@@ -94,11 +98,9 @@ void ShowPlayer()
 	default:
 		break;
 	}
-	SetCurrentCursorPos(curPos.X, curPos.Y);
 }
 void DeletePlayer()
 {
-	COORD curPos = GetCurrentCursorPos();
 	SetCurrentCursorPos(player.playerPos.X, player.playerPos.Y);
 	printf("  ");
 }
@@ -125,35 +127,74 @@ void playerMove(int direction) {
 		Sound_Play(GET_ITEM1);
 		player.item_rock++;
 		STAGE[player.playerPos.Y][player.playerPos.X / 2] = 0;
+		PrintUI();
 		break;
 	case ITEM_2:
 		player.item_portion++;
 		STAGE[player.playerPos.Y][player.playerPos.X / 2] = 0;
+		PrintUI();
 		break;
 	case WEAPON:
 		Sound_Play(GET_GUN);
 		player.weapon++;
 		STAGE[player.playerPos.Y][player.playerPos.X / 2] = 0;
+		PrintUI();
 		break;
 	case MONSTER:
 		Sound_Play(DAMAGE);
 		player.life--;
+		PrintUI();
 		break;
 	case KEY:
 		Sound_Play(GET_KEY);
 		player.stageKey++;
 		STAGE[player.playerPos.Y][player.playerPos.X / 2] = 0;
+		PrintUI();
+
+		if (stageNum == 4) {
+			if (player.stageKey == 1) {
+				boss.bossHP = 2;
+				STAGE[20][18] = 0;
+				STAGE[21][18] = 0;
+				STAGE[22][18] = 0;
+			}
+			else if (player.stageKey == 2) {
+				boss.bossHP = 1;
+				STAGE[15][23] = 0;
+				STAGE[15][24] = 0;
+				STAGE[15][25] = 0;
+			}
+			else if (player.stageKey == 3) {
+				boss.bossHP = 1;
+				STAGE[5][22] = 0;
+				STAGE[6][22] = 0;
+				STAGE[7][22] = 0;
+			}
+		}
 		break;
 	case EXIT:
-		if (isPlayerHasKey() == 1) {
+		if (isPlayerHasKey() >= 1) {
 			Sound_Play(USE_KEY);
+			player.stageKey = 0;
 			stageNum++;
 			StageInforInit(stageNum);
+			clearStage();
 			getScript(stageNum);
 			printScriptQueue();
 			clearStage();
 			ShowPlayer();
+
+			PrintUI();
+			if (stageNum == 4) {
+				BossInfoInit();
+				bossCooldownThread = CreateThread(NULL, 0, Thread_BOSS_COOLDOWN, (LPVOID)1, 0, &threadId);
+			}
 		}
+		break;
+	case LIGHTNING:
+		Sound_Play(DAMAGE);
+		player.life--;
+		PrintUI();
 		break;
 	default:
 		break;
