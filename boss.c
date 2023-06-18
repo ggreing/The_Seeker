@@ -21,6 +21,9 @@ DWORD WINAPI Thread_BOSS_COOLDOWN(LPVOID n) {
 		if (isPlayerDead() == 1) {
 			break;
 		}
+		if (boss.bossHP == 0) {
+			break;
+		}
 	}
 	_endthread();
 	return 0;

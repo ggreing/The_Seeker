@@ -4,7 +4,7 @@
 
 char STAGE[STAGE_Y][STAGE_X / 2];
 void GetStageInfor(int StageNum) {
-	FILE *fstage = NULL;
+	FILE* fstage = NULL;
 	char tmp;
 	int i, j;
 	switch (StageNum) {
@@ -51,7 +51,7 @@ void GetStageInfor(int StageNum) {
 					break;
 				case '7':
 					STAGE[i][j] = PC;
-					playerPosInit(j*2, i);
+					playerPosInit(j * 2, i);
 					STAGE[i][j] = EMPTY_SPACE;
 					break;
 				case '8':
@@ -82,33 +82,59 @@ void showStage(int stageObject, int posX, int posY) {
 		printf("  ");
 		break;
 	case WALL:
+		if (isCleared == 1) {
+			SetConsoleTextAttribute((GetStdHandle(STD_OUTPUT_HANDLE)), 7);
+		}
 		printf("■");
 		break;
 	case ITEM_1:
+		if (isCleared == 1) {
+			SetConsoleTextAttribute((GetStdHandle(STD_OUTPUT_HANDLE)), 8);
+		}
 		printf("○");
 		break;
 	case ITEM_2:
+		if (isCleared == 1) {
+			SetConsoleTextAttribute((GetStdHandle(STD_OUTPUT_HANDLE)), 13);
+		}
 		printf("♥");
 		break;
 	case WEAPON:
+		if (isCleared == 1) {
+			SetConsoleTextAttribute((GetStdHandle(STD_OUTPUT_HANDLE)), 12);
+		}
 		printf("ⅹ");
 		break;
 	case MONSTER:
+		if (isCleared == 1) {
+			SetConsoleTextAttribute((GetStdHandle(STD_OUTPUT_HANDLE)), 4);
+		}
 		printf("§");
 		break;
 	case NPC:
+		if (isCleared == 1) {
+			SetConsoleTextAttribute((GetStdHandle(STD_OUTPUT_HANDLE)), 6);
+		}
 		printf("ⓝ");		// 삭제 예정
 		break;
 	case PC:
-		//printf("◆");	
 		break;
 	case KEY:
+		if (isCleared == 1) {
+			SetConsoleTextAttribute((GetStdHandle(STD_OUTPUT_HANDLE)), 10);
+		}
 		printf("＊");
 		break;
 	case EXIT:
+		if (isCleared == 1) {
+			SetConsoleTextAttribute((GetStdHandle(STD_OUTPUT_HANDLE)), 10);
+		}
 		printf("★");
 		break;
 	case LIGHTNING:
+		if (isCleared == 1) {
+			SetConsoleTextAttribute((GetStdHandle(STD_OUTPUT_HANDLE)), 1);
+		}
 		printf("※");
 		break;
 	default:
@@ -166,7 +192,7 @@ void StageInforInit(int stageNum) {
 	GetStageInfor(stageNum);
 
 	//playerInfoInit(MAX_LIFE, 0, 0, 0, RIGHT);
-	initGunInfo();
+	//initGunInfo();
 }
 void clearStage() {
 	int i, j;
@@ -186,11 +212,16 @@ void clearScreen() {
 		printf("\n");
 	}
 }
-void GameOver() { 
+void GameOver() {
 	FILE* fstage = NULL;
 	char tmp;
 	int i, j;
+	if (IsPlaying == true) {
+		StopSound(MONSTER);
+	}
+	StopSound(GAME);
 	Sound_Play(GAMEOVER);
+	playerInfoInit(MAX_LIFE, 0, 0, 0, RIGHT);
 	fstage = fopen("gameover.txt", "r");
 	if (fstage != NULL) {
 		for (i = 0; i < STAGE_Y; i++) {
@@ -217,6 +248,7 @@ void GameOver() {
 		printf("                          ");
 		SetCurrentCursorPos(36, 33);
 	}
+	Sound_Play(GAME);
 	clearStage();
 }
 void GameStart() {
@@ -224,7 +256,7 @@ void GameStart() {
 	char tmp;
 	int i, j;
 	int num;
-	Sound_Play(12);
+	Sound_Play(GAME);
 	do {
 		fstage = fopen("gamestart.txt", "r");
 		if (fstage != NULL) {
@@ -265,7 +297,7 @@ void GameStart() {
 		while (1) {
 			num = SelectMenu();
 			if (num == 0) {
-				StopSound(MAIN);
+				//StopSound(MAIN);
 				break;
 			}
 			else if (num == 1) {
@@ -310,7 +342,7 @@ int SelectMenu() {
 					printf("◆");
 					SetCurrentCursorPos(curPos.X - 2, curPos.Y - 2);
 					printf("<<");
-					Sound_Play(13);
+					Sound_Play(SELECT_MANU);
 					num--;
 					break;
 				}
@@ -328,7 +360,7 @@ int SelectMenu() {
 					printf("◆");
 					SetCurrentCursorPos(curPos.X - 2, curPos.Y + 2);
 					printf("<<");
-					Sound_Play(13);
+					Sound_Play(SELECT_MANU);
 					num++;
 					break;
 				}
@@ -337,7 +369,7 @@ int SelectMenu() {
 				curPos = GetCurrentCursorPos();
 				SetCurrentCursorPos(curPos.X - 2, curPos.Y);
 				printf("  ");
-				Sound_Play(13);
+				Sound_Play(SELECT_MANU);
 				return num;
 			}
 		}
@@ -360,7 +392,7 @@ void help() {
 	while (1) {
 		Sleep(100);
 		key = _getch();
-		if(key==ENTER) {
+		if (key == ENTER) {
 			clearScreen();
 			return;
 		}

@@ -1,24 +1,47 @@
-﻿  ItemAndWeapon.c
-C:\Users\henry\Downloads\SW설계기초_9조-20230606T110911Z-001\SW설계기초_9조\11-24\The Seeker\The Seeker\ItemAndWeapon.c(42,34): warning C4098: 'shotGun': 'void' 함수에서 값을 반환하고 있습니다.
-C:\Users\henry\Downloads\SW설계기초_9조-20230606T110911Z-001\SW설계기초_9조\11-24\The Seeker\The Seeker\ItemAndWeapon.c(44,12): warning C4013: 'Sound_Play'이(가) 정의되지 않았습니다. extern은 int형을 반환하는 것으로 간주합니다.
-C:\Users\henry\Downloads\SW설계기초_9조-20230606T110911Z-001\SW설계기초_9조\11-24\The Seeker\The Seeker\ItemAndWeapon.c(120,12): warning C4013: 'time'이(가) 정의되지 않았습니다. extern은 int형을 반환하는 것으로 간주합니다.
+﻿  boss.c
+C:\Users\henry\Desktop\새 폴더 (3)\boss.c(131,12): warning C4013: 'time'이(가) 정의되지 않았습니다. extern은 int형을 반환하는 것으로 간주합니다.
+  ItemAndWeapon.c
+C:\Users\henry\Desktop\새 폴더 (3)\ItemAndWeapon.c(48,11): warning C4098: 'shotGun': 'void' 함수에서 값을 반환하고 있습니다.
+C:\Users\henry\Desktop\새 폴더 (3)\ItemAndWeapon.c(190,12): warning C4013: 'time'이(가) 정의되지 않았습니다. extern은 int형을 반환하는 것으로 간주합니다.
+  monster.c
   Player.c
-C:\Users\henry\Downloads\SW설계기초_9조-20230606T110911Z-001\SW설계기초_9조\11-24\The Seeker\The Seeker\Player.c(101,8): warning C4101: 'curPos' :참조되지 않은 지역 변수입니다.
-C:\Users\henry\Downloads\SW설계기초_9조-20230606T110911Z-001\SW설계기초_9조\11-24\The Seeker\The Seeker\Player.c(152,13): warning C4013: 'getScript'이(가) 정의되지 않았습니다. extern은 int형을 반환하는 것으로 간주합니다.
-C:\Users\henry\Downloads\SW설계기초_9조-20230606T110911Z-001\SW설계기초_9조\11-24\The Seeker\The Seeker\Player.c(153,20): warning C4013: 'printScriptQueue'이(가) 정의되지 않았습니다. extern은 int형을 반환하는 것으로 간주합니다.
+C:\Users\henry\Desktop\새 폴더 (3)\Player.c(178,14): warning C4013: 'getScript'이(가) 정의되지 않았습니다. extern은 int형을 반환하는 것으로 간주합니다.
+C:\Users\henry\Desktop\새 폴더 (3)\Player.c(179,21): warning C4013: 'printScriptQueue'이(가) 정의되지 않았습니다. extern은 int형을 반환하는 것으로 간주합니다.
   script.c
-C:\Users\henry\Downloads\SW설계기초_9조-20230606T110911Z-001\SW설계기초_9조\11-24\The Seeker\The Seeker\script.c(94,8): warning C4013: 'getch'이(가) 정의되지 않았습니다. extern은 int형을 반환하는 것으로 간주합니다.
+C:\Users\henry\Desktop\새 폴더 (3)\script.c(94,8): warning C4013: 'getch'이(가) 정의되지 않았습니다. extern은 int형을 반환하는 것으로 간주합니다.
   sound.c
-C:\Users\henry\Downloads\SW설계기초_9조-20230606T110911Z-001\SW설계기초_9조\11-24\The Seeker\The Seeker\sound.c(30,23): warning C4027: 정식 매개 변수 목록을 사용하지 않고 함수를 선언했습니다.
+C:\Users\henry\Desktop\새 폴더 (3)\sound.c(56,44): warning C4305: '함수': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\henry\Desktop\새 폴더 (3)\sound.c(82,51): warning C4305: '함수': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\henry\Desktop\새 폴더 (3)\sound.c(83,19): warning C4305: '=': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\henry\Desktop\새 폴더 (3)\sound.c(94,51): warning C4305: '함수': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\henry\Desktop\새 폴더 (3)\sound.c(95,19): warning C4305: '=': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\henry\Desktop\새 폴더 (3)\sound.c(111,50): warning C4305: '함수': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\henry\Desktop\새 폴더 (3)\sound.c(112,18): warning C4305: '=': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\henry\Desktop\새 폴더 (3)\sound.c(123,50): warning C4305: '함수': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\henry\Desktop\새 폴더 (3)\sound.c(124,18): warning C4305: '=': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\henry\Desktop\새 폴더 (3)\sound.c(140,51): warning C4305: '함수': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\henry\Desktop\새 폴더 (3)\sound.c(141,19): warning C4305: '=': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\henry\Desktop\새 폴더 (3)\sound.c(152,51): warning C4305: '함수': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\henry\Desktop\새 폴더 (3)\sound.c(153,19): warning C4305: '=': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\henry\Desktop\새 폴더 (3)\sound.c(169,50): warning C4305: '함수': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\henry\Desktop\새 폴더 (3)\sound.c(170,18): warning C4305: '=': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\henry\Desktop\새 폴더 (3)\sound.c(181,50): warning C4305: '함수': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\henry\Desktop\새 폴더 (3)\sound.c(182,18): warning C4305: '=': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\henry\Desktop\새 폴더 (3)\sound.c(227,50): warning C4305: '함수': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\henry\Desktop\새 폴더 (3)\sound.c(228,18): warning C4305: '=': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\henry\Desktop\새 폴더 (3)\sound.c(239,50): warning C4305: '함수': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\henry\Desktop\새 폴더 (3)\sound.c(240,18): warning C4305: '=': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\henry\Desktop\새 폴더 (3)\sound.c(257,51): warning C4305: '함수': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\henry\Desktop\새 폴더 (3)\sound.c(258,19): warning C4305: '=': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\henry\Desktop\새 폴더 (3)\sound.c(269,51): warning C4305: '함수': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\henry\Desktop\새 폴더 (3)\sound.c(270,19): warning C4305: '=': 'double'에서 'float'(으)로 잘립니다.
   Stage.c
-C:\Users\henry\Downloads\SW설계기초_9조-20230606T110911Z-001\SW설계기초_9조\11-24\The Seeker\The Seeker\Stage.c(191,12): warning C4013: 'Sound_Play'이(가) 정의되지 않았습니다. extern은 int형을 반환하는 것으로 간주합니다.
-C:\Users\henry\Downloads\SW설계기초_9조-20230606T110911Z-001\SW설계기초_9조\11-24\The Seeker\The Seeker\Stage.c(266,14): warning C4013: 'StopSound'이(가) 정의되지 않았습니다. extern은 int형을 반환하는 것으로 간주합니다.
-C:\Users\henry\Downloads\SW설계기초_9조-20230606T110911Z-001\SW설계기초_9조\11-24\The Seeker\The Seeker\Stage.c(294,13): warning C4013: '_kbhit'이(가) 정의되지 않았습니다. extern은 int형을 반환하는 것으로 간주합니다.
-C:\Users\henry\Downloads\SW설계기초_9조-20230606T110911Z-001\SW설계기초_9조\11-24\The Seeker\The Seeker\Stage.c(295,16): warning C4013: '_getch'이(가) 정의되지 않았습니다. extern은 int형을 반환하는 것으로 간주합니다.
-C:\Users\henry\Downloads\SW설계기초_9조-20230606T110911Z-001\SW설계기초_9조\11-24\The Seeker\The Seeker\Stage.c(346,9): warning C4101: 'j' :참조되지 않은 지역 변수입니다.
+C:\Users\henry\Desktop\새 폴더 (3)\Stage.c(328,13): warning C4013: '_kbhit'이(가) 정의되지 않았습니다. extern은 int형을 반환하는 것으로 간주합니다.
+C:\Users\henry\Desktop\새 폴더 (3)\Stage.c(329,16): warning C4013: '_getch'이(가) 정의되지 않았습니다. extern은 int형을 반환하는 것으로 간주합니다.
+C:\Users\henry\Desktop\새 폴더 (3)\Stage.c(379,9): warning C4101: 'j' :참조되지 않은 지역 변수입니다.
   System.c
-C:\Users\henry\Downloads\SW설계기초_9조-20230606T110911Z-001\SW설계기초_9조\11-24\The Seeker\The Seeker\System.c(31,13): warning C4013: '_kbhit'이(가) 정의되지 않았습니다. extern은 int형을 반환하는 것으로 간주합니다.
-C:\Users\henry\Downloads\SW설계기초_9조-20230606T110911Z-001\SW설계기초_9조\11-24\The Seeker\The Seeker\System.c(32,16): warning C4013: '_getch'이(가) 정의되지 않았습니다. extern은 int형을 반환하는 것으로 간주합니다.
+C:\Users\henry\Desktop\새 폴더 (3)\System.c(32,12): warning C4013: '_kbhit'이(가) 정의되지 않았습니다. extern은 int형을 반환하는 것으로 간주합니다.
+C:\Users\henry\Desktop\새 폴더 (3)\System.c(33,15): warning C4013: '_getch'이(가) 정의되지 않았습니다. extern은 int형을 반환하는 것으로 간주합니다.
   코드를 생성하고 있습니다...
   main.c
-  The Seeker.vcxproj -> C:\Users\henry\Downloads\SW설계기초_9조-20230606T110911Z-001\SW설계기초_9조\11-24\The Seeker\The Seeker\Debug\The Seeker.exe
+  The Seeker.vcxproj -> C:\Users\henry\Desktop\새 폴더 (3)\Debug\The Seeker.exe
