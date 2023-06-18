@@ -1,11 +1,33 @@
 #pragma once
+#include<Windows.h>
+#include"System.h"
 
 #define MAX_LIFE 5
+#define INIT_WEAPON 10		// 처음 시작할 때 보유할 탄피 수
 
-// 변수
-int pcLife = MAX_LIFE;
-int item_rock = 0;
-int item_portion = 0;
-int pcDirect = 0;
+typedef struct PLAYER {
+	int life;
+	int item_rock;
+	int item_portion;
+	int weapon;
+	int direction;
+	int stageKey;
+	COORD playerPos;
+} PLAYER;
 
-// 함수
+extern PLAYER player;
+extern shootingRange;
+
+// player
+void playerInfoInit(int life, int item_rock, int item_portion, int weapon, int direction); //player 파라미터 초기화
+void playerPosInit(int playerPosX, int playerPosY); //player의 위치 정보 초기화
+int playerShiftRight(void); //player를 충돌검사 후 오른쪽으로 움직임. playerMove 하위 메소드
+int playerShiftLeft(void); //player를 충돌검사 후 왼쪽으로 움직임. playerMove 하위 메소드
+int playerShiftUp(void); //player를 충돌검사 후 위로 움직임. playerMove 하위 메소드
+int playerShiftDown(void); //player를 충돌검사 후 아래로 움직임. playerMove 하위 메소드
+void ShowPlayer(); //player의 캐릭터를 플레이어가 위치한 좌표에 출력함
+void DeletePlayer(); //player의 캐릭터를 플레이어가 위치한 좌표에서 삭제함.
+void playerMove(int direction); //player 이동 함수. player 이동 시 아이템, 무기 획득, 몬스터에 의한 데미지 입는 기능과 연결.
+
+// weapon & item
+void shotGun(void);	// 무기 사용
