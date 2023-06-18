@@ -2,7 +2,6 @@
 #include "System.h"
 #include <Windows.h>
 
-
 // weapon&item
 extern int currentDirect;				// 아이템/총 사용 시점의 플레이어 방향
 // 총쏘기 관련

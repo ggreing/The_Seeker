@@ -1,13 +1,13 @@
 #include"script.h"
 #pragma warning(disable:4996)
 
-SCRIPT *script = NULL;
-static SCRIPT *scriptLast = NULL;
+SCRIPT* script = NULL;
+static SCRIPT* scriptLast = NULL;
 void getScript(int stageNum) {
-	FILE *fscript = NULL;
+	FILE* fscript = NULL;
 	char str[301];
-	char *name;
-	char *text;
+	char* name;
+	char* text;
 	switch (stageNum) {
 	case 0:
 		fscript = fopen("script/prologText.txt", "r");
@@ -43,10 +43,10 @@ void getScript(int stageNum) {
 		fclose(fscript);
 	}
 }
-SCRIPT *getScriptNode(char *name, char *text) {
-	SCRIPT *node;
+SCRIPT* getScriptNode(char* name, char* text) {
+	SCRIPT* node;
 
-	node = (SCRIPT *)malloc(sizeof(SCRIPT));
+	node = (SCRIPT*)malloc(sizeof(SCRIPT));
 	if (node == NULL) exit(-1);
 
 	strcpy(node->name, name);
@@ -55,8 +55,8 @@ SCRIPT *getScriptNode(char *name, char *text) {
 
 	return node;
 }
-void putScriptQueue(char *name, char *text) {
-	SCRIPT *node = getScriptNode(name, text);
+void putScriptQueue(char* name, char* text) {
+	SCRIPT* node = getScriptNode(name, text);
 
 	if (script == NULL) {
 		script = node;
@@ -68,8 +68,8 @@ void putScriptQueue(char *name, char *text) {
 	}
 }
 void printScriptQueue() {
-	SCRIPT *tmp;
-	char *pch;
+	SCRIPT* tmp;
+	char* pch;
 	int i, j;
 	printTextAlign();
 	while (script != NULL) {
