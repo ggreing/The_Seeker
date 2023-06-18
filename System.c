@@ -1,29 +1,27 @@
 #include "System.h"
 
-CRITICAL_SECTION cs;
-
 COORD GetCurrentCursorPos(void)
 {
-	COORD curPoint;
-	CONSOLE_SCREEN_BUFFER_INFO curInfo;
+    COORD curPoint;
+    CONSOLE_SCREEN_BUFFER_INFO curInfo;
 
-	GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &curInfo);
-	curPoint.X = curInfo.dwCursorPosition.X;
-	curPoint.Y = curInfo.dwCursorPosition.Y;
+    GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &curInfo);
+    curPoint.X = curInfo.dwCursorPosition.X;
+    curPoint.Y = curInfo.dwCursorPosition.Y;
 
-	return curPoint;
+    return curPoint;
 }
 void RemoveCursor(void)
 {
-	CONSOLE_CURSOR_INFO curInfo;
-	GetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &curInfo);
-	curInfo.bVisible = 0;
-	SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &curInfo);
+    CONSOLE_CURSOR_INFO curInfo;
+    GetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &curInfo);
+    curInfo.bVisible = 0;
+    SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &curInfo);
 }
 void SetCurrentCursorPos(int x, int y)
 {
-	COORD pos = { x, y };
-	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
+    COORD pos = { x, y };
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
 }
 
 void ProcessKeyInput() {
@@ -44,15 +42,6 @@ void ProcessKeyInput() {
 		case DOWN:
 			playerMove(DOWN);
 			break;
-		case ATTACK:
-			shotGun();
-			break;
-		case ITEM_INPUT_2:
-			useItemPortion();
-			break;
-		case ITEM_INPUT_1 :
-			useItemRock();
-			break;
 		}
 	}
 }
@@ -60,12 +49,9 @@ void ProcessKeyInput() {
 int DetectCollision(int posX, int posY) {
 	return STAGE[posY][posX / 2];
 }
-
 void showSoundRange(COORD curPos, int objNum, int range) {
 	int posX = curPos.X / 2;
 	int posY = curPos.Y;
-
-	InitializeCriticalSection(&cs);
 
 	for (posX = curPos.X / 2; posX >= 0 && posX > curPos.X / 2 - range; posX--) {
 		for (posY = curPos.Y; posY >= 0 && posY > curPos.Y - range; posY--) {
@@ -119,5 +105,4 @@ void showSoundRange(COORD curPos, int objNum, int range) {
 		}
 		if (STAGE[posY][curPos.X / 2] == WALL) break;
 	}
-	LeaveCriticalSection(&cs);
 }

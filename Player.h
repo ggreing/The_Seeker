@@ -2,6 +2,9 @@
 #include<Windows.h>
 #include"System.h"
 
+#define MAX_LIFE 5
+#define INIT_WEAPON 10		// 처음 시작할 때 보유할 탄피 수
+
 typedef struct PLAYER {
 	int life;
 	int item_rock;
@@ -13,6 +16,7 @@ typedef struct PLAYER {
 } PLAYER;
 
 extern PLAYER player;
+extern shootingRange;
 
 // player
 void playerInfoInit(int life, int item_rock, int item_portion, int weapon, int direction); //player 파라미터 초기화
@@ -24,5 +28,6 @@ int playerShiftDown(void); //player를 충돌검사 후 아래로 움직임. playerMove 하위
 void ShowPlayer(); //player의 캐릭터를 플레이어가 위치한 좌표에 출력함
 void DeletePlayer(); //player의 캐릭터를 플레이어가 위치한 좌표에서 삭제함.
 void playerMove(int direction); //player 이동 함수. player 이동 시 아이템, 무기 획득, 몬스터에 의한 데미지 입는 기능과 연결.
-int isPlayerDead(); //player의 라이프가 0일 경우 1 반환, 이외에 경우 0 반환
-int isPlayerHasKey(); //player가 key를 가지고 있으면 1 반환, 이외에 경우 0 반환
+
+// weapon & item
+void shotGun(void);	// 무기 사용
